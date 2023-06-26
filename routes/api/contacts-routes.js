@@ -8,7 +8,7 @@ const schema = require("../../schemas/contacts-joiSchema");
 
 const { validateBody } = require("../../decorators");
 
-const { isValidId, authenticate } = require("..//..//middlewares");
+const { isValidId, authenticate, upload } = require("..//..//middlewares");
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -20,6 +20,7 @@ router.get("/:contactId", isValidId, controllers.getContactByIdController);
 
 router.post(
 	"/",
+	upload.single("poster"),
 	validateBody(schema.addContactSchema),
 	controllers.addContactController
 );
