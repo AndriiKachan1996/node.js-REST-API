@@ -1,29 +1,17 @@
 const multer = require("multer");
 const path = require("path");
 
-////////////////////////////////////////////////////////////////
+const tempDir = path.join(process.cwd(), "temp");
 
-const destination = path.resolve("temp"); // Встановлюємо шлях до тимчасової папки
-
-const storage = multer.diskStorage({
-	// Створюємо об'єкт для зберігання файлів на диск
-
-	destination, // Вказуємо шлях до тимчасової папки
+const multerConfig = multer.diskStorage({
+	destination: tempDir,
 	filename: (req, file, cb) => {
-		// Генеруємо унікальне ім'я файлу
-
-		const uniquePreffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-		const { originalname } = file;
-		const filename = `${uniquePreffix}_${originalname}`;
-		cb(null, filename);
+		cb(null, file.originalname);
 	},
 });
 
-////////////////////////////////////////////////////////////////
-
 const upload = multer({
-	// Створюємо об'єкт middleware для завантаження файлів
-	storage,
+	storage: multerConfig,
 });
 
 module.exports = upload;

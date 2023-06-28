@@ -37,37 +37,10 @@ const getContactByIdController = async (req, res) => {
 };
 
 const addContactController = async (req, res) => {
-	const { _id: owner } = req.user;
-	const { path: oldPath } = req.file;
-	const fileData = await cloudinary.uploader.upload(oldPath, {
-		folder: "posters",
-	});
-	await fs.unlink(oldPath);
-	const result = await Movie.create({
-		...req.body,
-		poster: fileData.url,
-		owner,
-	});
+	const { _id: owner = null } = req.user;
+
+	const result = await Contact.create({ ...req.body, owner });
 	res.status(201).json(result);
-	// await fs.unlink(oldPath);
-	// const result = await Movie.create({
-	// 	...req.body,
-	// 	poster: fileData.url,
-	// 	owner,
-	// });
-	// res.status(201).json(result);
-	// const { _id: owner } = req.user;
-	// const { path: oldPath } = req.file; // Отримуємо шлях та ім'я файлу з запиту (req.file)
-	// const fileData = await cloudinary.uploader.upload(oldPath, {
-	// 	folder: "posters",
-	// });
-	// console.log(fileData);
-
-	// const poster = path.join("avatars", filename); // Формуємо шлях для використання у відповіді клієнту
-
-	// const result = await Contact.create({ ...req.body, poster, owner }); // Створюємо новий контакт у базі даних, використовуючи дані з тіла запиту (req.body), шляху до файлу та ідентифікатора власника
-
-	// res.status(201).json(result);
 };
 
 const updateContactController = async (req, res) => {

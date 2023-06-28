@@ -8,7 +8,7 @@ const schema = require("../../schemas/users-joiSchema");
 
 const authController = require("../../controllers/auth-controller");
 
-const { authenticate } = require("../../middlewares");
+const { authenticate, upload } = require("../../middlewares");
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -27,6 +27,13 @@ router.post(
 router.get("/current", authenticate, authController.getCurrent);
 
 router.post("/logout", authenticate, authController.logout);
+
+router.patch(
+	"/avatars",
+	authenticate,
+	upload.single("avatar"),
+	authController.setAvatar
+);
 
 //////////////////////////////////////////////////////////////////////////
 module.exports = router;
